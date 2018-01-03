@@ -7,7 +7,7 @@
 function bd_map = bd_map(filename)
 %% init
 rng(1)
-addpath('mex');
+%addpath('mex');
 
 
 %% parameters
