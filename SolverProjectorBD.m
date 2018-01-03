@@ -62,7 +62,7 @@ classdef SolverProjectorBD < SolverProjector
             obj.report(1,'-----------------------------------------------------------------\n');
             for iter = 1:iter_max
                 obj.iterate();
-                err = mse(obj.tanNormal);
+                err = norm(obj.tanNormal);
                 obj.report(1,'iter %d -- err: %g    dist: %g    flips: %g   time: %g sec (pD:%d%%, pL:%d%%)\n',iter,err,max(obj.distortions),nnz(obj.flips),obj.t_iter,round(100*obj.t_projectD/obj.t_iter), round(100*obj.t_projectLinear/obj.t_iter));
                 if err<tol_err
                     obj.report(1,'err<tol_err --> stopping...\n');
@@ -89,7 +89,7 @@ classdef SolverProjectorBD < SolverProjector
                 patch('vertices',obj.y,'faces',obj.F(logical(obj.flips),sides(kk,:)),'FaceVertexCData',obj.distortions,'facecolor','none','edgecolor',flip_color);
             end
             axis equal;
-            axis off;
+            axis on;
             colormap(dist_colors);
             colorbar;
             caxis([1 1.5*obj.K]);

@@ -91,6 +91,7 @@ classdef (Abstract) SolverProjector < handle
             switch obj.mode
                 case SolverProjectorModeEnum.AltProj
                     temp_RHS = [obj.TWW*obj.pTx; obj.eqRHS];
+                    disp(obj.eqRHS);
                     temp_x_lambda = obj.preFactorization.solve(temp_RHS);
                     obj.x = temp_x_lambda(1:obj.nVars);
                 case SolverProjectorModeEnum.Tangent
