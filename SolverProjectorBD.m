@@ -63,11 +63,14 @@ classdef SolverProjectorBD < SolverProjector
             for iter = 1:iter_max
                 obj.iterate();
                 err = norm(obj.tanNormal);
-%                 obj.report(1,'iter %d -- err: %g    dist: %g    flips: %g   time: %g sec (pD:%d%%, pL:%d%%)\n',iter,err,max(obj.distortions),nnz(obj.flips),obj.t_iter,round(100*obj.t_projectD/obj.t_iter), round(100*obj.t_projectLinear/obj.t_iter));
+                obj.report(1,'iter %d -- err: %g    dist: %g    flips: %g   time: %g sec (pD:%d%%, pL:%d%%)\n',iter,err,max(obj.distortions),nnz(obj.flips),obj.t_iter,round(100*obj.t_projectD/obj.t_iter), round(100*obj.t_projectLinear/obj.t_iter));
                 if err<tol_err
 %                     obj.report(1,'err<tol_err --> stopping...\n');
                     break;
                 end
+            end
+            if nnz(obj.flips) == 0
+                disp("success")
             end
             obj.report(1,'-----------------------------------------------------------------\n');
             obj.report(1,'initial max dist %g,  flips %d  (infeasible %d)\n', max(obj.distortions), nnz(obj.flips), nnz((obj.distortions>obj.K)|obj.flips));
@@ -92,6 +95,17 @@ classdef SolverProjectorBD < SolverProjector
             axis on;
             colormap(dist_colors);
             colorbar;
+            hold;
+             s = size(obj.x0,1);
+             a = mod(168070,s);
+             b = mod(1680700,s);
+             c = mod(16807000,s);
+             disp(a);
+             disp(b);
+             disp(c);
+             plot(obj.y(a,1),obj.y(a,2),'.r','markersize',10);
+             plot(obj.y(b,1),obj.y(b,2),'.r','markersize',10);
+             plot(obj.y(c,1),obj.y(c,2),'.r','markersize',10);
             caxis([1 1.5*obj.K]);
         end
     end

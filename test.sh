@@ -1,4 +1,4 @@
-:#! /bin/bash
+#! /bin/bash
 
 for i in $( ls models )
 do 
