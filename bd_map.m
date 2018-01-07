@@ -13,11 +13,11 @@ rng(1)
 %% parameters
 n = 100; % problem size
 sigma = .2; % noise level (for initial map)
-K = 1e4; % conformal distortion bound
+K = 1e10; % conformal distortion bound
 lb = -1; % lower bound on SVs (-1 = disabled)
 ub = -1; % upper bound on SVs (-1 = disabled)
 iter_max = 1000; % maximal number of BD projection iterations
-tol_err = 1e-10; % tolerance for stopping BD projection iterations
+tol_err = 1e-15; % tolerance for stopping BD projection iterations
 use_weighted_metric = false; % use a weighted metric?
 
 
@@ -25,6 +25,7 @@ use_weighted_metric = false; % use a weighted metric?
 % generate a noisy surface
 
 obj = readObj("models/"+filename);
+ 
 V = obj.v;
 F = obj.f.v;
 
@@ -34,7 +35,7 @@ n_vert = size(V,1);
 n_tri = size(F,1);
 
 % initial map
-x0 = obj.vt./5;
+x0 = obj.vt;
 
 % setup linear constraints (fix centroid)
 n = 6;
@@ -50,12 +51,16 @@ c = mod(16807000,s);
 eq_lhs(5,c) = 1;
 eq_lhs(6,c+s) = 1;
 eq_rhs = zeros(n,1);
-eq_rhs(1) = 1;
-eq_rhs(2) = 1;
-eq_rhs(3) = 1;
-eq_rhs(4) = -1;
-eq_rhs(5) = 0;
-eq_rhs(6) = -1;
+idx = strfind(filename,".obj");
+model_name = extractBefore(filename,idx);
+eq_r = csvread("pos/"+model_name+".csv");
+eq_rhs = [eq_r(1,:)';eq_r(2,:)';eq_r(3,:)']
+% eq_rhs(1) = 1;
+% eq_rhs(2) = 1;
+% eq_rhs(3) = -1;
+% eq_rhs(4) = 1;
+% eq_rhs(5) = 0;
+% eq_rhs(6) = -1;
 %eq_rhs(10,1) = -1;
 % eq_lhs = kron(eye(dim),ones(1,n_vert))/n_vert;
 % eq_rhs = eq_lhs*colStack(x0);
@@ -110,8 +115,10 @@ write_wobj(OBJ,"LGBD/"+filename);
 %       OBJ.objects(i).data.normal:   [n x 3 double]
 
 
-
-% plot output map
+% disp(solver_bd.y(a,:));
+% disp(solver_bd.y(b,:));
+% disp(solver_bd.y(c,:));
+% % plot output map
 % figure;
 % solver_bd.visualize();
 % title('Output Map');
