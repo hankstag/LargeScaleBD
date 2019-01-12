@@ -24,7 +24,7 @@ use_weighted_metric = false; % use a weighted metric?
 %% generate problem
 % generate a noisy surface
 filename
-obj = readObj("LSCM_models/"+filename);
+obj = readObj("models/"+filename);
  
 V = obj.v;
 F = obj.f.v;
@@ -42,7 +42,7 @@ n = 6;
 s = size(x0,1);
 idx = strfind(filename,".obj");
 model_name = extractBefore(filename,idx);
-eq_l = csvread("LSCM_constraints/"+model_name+"_pi.csv");
+eq_l = csvread("constraints/"+model_name+"_pi.csv");
 
 eq_lhs = zeros(n,s*dim);
 a = eq_l(1,1);
@@ -55,7 +55,7 @@ c = eq_l(3,1);
 eq_lhs(5,c) = 1;
 eq_lhs(6,c+s) = 1;
 eq_rhs = zeros(n,1);
-eq_r = csvread("LSCM_constraints/"+model_name+"_p.csv");
+eq_r = csvread("constraints/"+model_name+"_p.csv");
 eq_rhs = [eq_r(1,:)';eq_r(2,:)';eq_r(3,:)']
 % eq_rhs(1) = 1;
 % eq_rhs(2) = 1;

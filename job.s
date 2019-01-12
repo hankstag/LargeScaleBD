@@ -25,7 +25,7 @@ SRCDIR=$HOME/LargeScaleBD
 cd $SCRATCH/LargeScaleBD/
 
 # load whatever environment modules the executable needs:
-module load /share/apps/matlab/2017b
+module load matlab/2017b
   
 # run the executable (sending the contents of my_input_params.inp to stdin)
 bash $SRCDIR/run_bd_map.sh /share/apps/matlab/2017b $1
