@@ -24,7 +24,7 @@ use_weighted_metric = false; % use a weighted metric?
 %% generate problem
 % generate a noisy surface
 
-obj = readObj("models/"+filename);
+obj = readObj("LSCM_models/"+filename);
  
 V = obj.v;
 F = obj.f.v;
@@ -40,20 +40,22 @@ x0 = obj.vt;
 % setup linear constraints (fix centroid)
 n = 6;
 s = size(x0,1);
+idx = strfind(filename,".obj");
+model_name = extractBefore(filename,idx);
+eq_l = csvread("LSCM_constraints/"+model_name+"_pi.csv");
+
 eq_lhs = zeros(n,s*dim);
-a = mod(168070,s);
+a = eq_l(1,1);
 eq_lhs(1,a) = 1;
 eq_lhs(2,a+s) = 1;
-b = mod(1680700,s);
+b = eq_l(2,1);
 eq_lhs(3,b) = 1;
 eq_lhs(4,b+s) = 1;
-c = mod(16807000,s);
+c = eq_l(3,1);
 eq_lhs(5,c) = 1;
 eq_lhs(6,c+s) = 1;
 eq_rhs = zeros(n,1);
-idx = strfind(filename,".obj");
-model_name = extractBefore(filename,idx);
-eq_r = csvread("pos/"+model_name+".csv");
+eq_r = csvread("LSCM_constraints/"+model_name+"_p.csv");
 eq_rhs = [eq_r(1,:)';eq_r(2,:)';eq_r(3,:)']
 % eq_rhs(1) = 1;
 % eq_rhs(2) = 1;
