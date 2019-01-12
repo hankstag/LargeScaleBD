@@ -23,7 +23,7 @@ use_weighted_metric = false; % use a weighted metric?
 
 %% generate problem
 % generate a noisy surface
-
+filename
 obj = readObj("LSCM_models/"+filename);
  
 V = obj.v;

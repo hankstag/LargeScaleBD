@@ -19,7 +19,7 @@ function obj = readObj(fname)
 
 % set up field types
 v = []; vt = []; vn = []; f.v = []; f.vt = []; f.vn = [];
-
+fname
 fid = fopen(fname);
 
 % parse .obj file 
